@@ -23,6 +23,7 @@ public:
 	Character();
 	Character(std::string);
 	Character(std::string, int);
+	Character(std::string, int, int, std::vector<Weapon>);
 	~Character();
 	std::string getName() const;
 	int getHealth();
@@ -33,6 +34,7 @@ public:
 	void setHealth(int h);
 	void setRemainingHealth(int);
 	void setCurrentWeapon();
+	void setDeath(bool);
 	void IsHoldingItem();
 	virtual int attack();
 	void checkHealth();

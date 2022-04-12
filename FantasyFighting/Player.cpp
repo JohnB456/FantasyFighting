@@ -7,7 +7,6 @@ Player::Player():Character()
 {
 	level = 1;
 	exp = 0;
-	expNeeded = 20;
 	gold = 0;
 }
 
@@ -15,13 +14,16 @@ Player::Player(std::string n):Character(n)
 {
 	level = 1;
 	exp = 0;
-	expNeeded = 20;
 	gold = 0;
 }
 
-//Player::Player(std::string, int, int, int, int, int)
-//{
-//}
+Player::Player(std::string n, int h, int rh, int l, int ep, int g, std::vector<Item*> is, std::vector<Weapon> weapons):Character(n,h,rh,weapons)
+{
+	level = l;
+	exp = ep;
+	gold = g;
+	items = is;
+}
 
 int Player::getLevel() const
 {
@@ -31,11 +33,6 @@ int Player::getLevel() const
 int Player::getExp() const
 {
 	return exp;
-}
-
-int Player::getExpNeeded() const
-{
-	return expNeeded;
 }
 
 int Player::getGold() const
@@ -53,22 +50,29 @@ void Player::setExp(int e)
 	exp = e;
 }
 
-void Player::setExpNeeded(int en)
-{
-	expNeeded = en;
-}
-
 void Player::setGold(int g)
 {
 	gold = g;
 }
 
+void Player::setItems(std::vector<Item*> itemList)
+{
+	for (int i = 0; i < itemList.size(); i++)
+	{
+		items[i] = itemList[i];
+	}
+}
+
+
 void Player::levelUp()
 {
-	if (exp >= expNeeded)
+	if (exp >= 100)
 	{
-		++level;
-		health += 5;
+		std::cout << "You leveled up!" << std::endl;
+		level++;
+		setHealth(12);
+		setRemainingHealth(12);
+		exp -= 100;
 	}
 }
 
@@ -80,7 +84,7 @@ std::string Player::getType() const
 void Player::displayPlayer()
 {
 	std::cout << name << std::endl;
-	std::cout << "Level: " << level << "\tExp: " << exp << "/" << expNeeded << std::endl;
+	std::cout << "Level: " << level << "\tExp: " << exp << std::endl;
 	std::cout << "Health: " << remainingHealth << "/" << health << std::endl;
 	std::cout << "Gold: " << gold << std::endl;
 }

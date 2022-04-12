@@ -25,7 +25,6 @@ public:
 	void setPlayer(Player);
 	void setEnemy(Enemy);
 	int attack(std::string,Character&);
-	void startBattle();
 };
 
 #endif

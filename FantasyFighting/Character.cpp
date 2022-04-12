@@ -25,14 +25,20 @@ Character::Character(std::string n, int h)
 {
 	name = n;
 	health = h;
-	remainingHealth = health;
+}
+
+Character::Character(std::string n, int h, int rh, std::vector<Weapon> weapons)
+{
+	name = n;
+	health = h;
+	remainingHealth = rh;
 	weaponList.push_back(new Weapon("Fists", 1));
 	currentWeapon = *weaponList[0];
 }
 
 Character::~Character()
 {
-	for (int n = weaponList.size(); n >= 0; n--)
+	for (int n = weaponList.size() - 1; n >= 0; n--)
 	{
 		delete weaponList[n];
 	}
@@ -115,6 +121,7 @@ void Character::checkHealth()
 void Character::obtainWeapon(Weapon w)
 {
 	std::cout << name << " has obtained a " << w.getName() << " which does " << w.getDamage() << " damage." << std::endl;
+	std::cout << std::endl;
 	weaponList.push_back(new Weapon(w.getName(), w.getDamage()));
 }
 
@@ -140,4 +147,9 @@ void Character::setCurrentWeapon()
 	{
 		isHoldingItem = true;
 	}
+}
+
+void Character::setDeath(bool d)
+{
+	isDead = d;
 }

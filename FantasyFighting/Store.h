@@ -1,0 +1,22 @@
+// John Buob
+// This is my own work
+
+#ifndef STORE_H
+#define STORE_H
+
+#include "Weapon.h"
+#include <vector>
+#include <string>
+
+class Store
+{
+private:
+	std::vector<Weapon> stock;
+	std::vector<int> prices;
+public:
+	Store();
+	void displayStock();
+	Weapon sellWeapon(int);
+};
+
+#endif
