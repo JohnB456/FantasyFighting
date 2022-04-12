@@ -7,6 +7,7 @@
 #include "Weapon.h"
 #include <vector>
 #include <string>
+#include <iostream>
 
 class Store
 {

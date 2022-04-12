@@ -5,7 +5,6 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "EnemyRandomizer.h"
-#include "HealingItem.h"
 #include <string>
 #include <vector>
 int main()
@@ -16,12 +15,6 @@ int main()
 	std::cin >> input;
 	std::cout << std::endl;
 	Player player(input);
-	Weapon w("Sword", 5);
-	player.obtainWeapon(w);
-	player.setCurrentWeapon();
-	//std::vector<Item*> items;
-	//items[0] = new HealingItem("Potion", 5);
-	//player.setItems(items);
 	Enemy enemy = r.randomEnemyBeginneer();
 	enemy.setRemainingHealth(enemy.getHealth());
 	Battle test(player, enemy);

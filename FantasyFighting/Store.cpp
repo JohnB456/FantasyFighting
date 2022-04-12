@@ -31,9 +31,16 @@ Store::Store()
 void Store::displayStock()
 {
 	std::cout << "Mercent: What will you buy?";
-	std::cout << 
+	for (int n = 0; n < stock.size(); n++)
+	{
+		std::cout <<  n+1 << ", " << stock[n].getName() << " which does " << stock[n].getDamage() << " damage and costs " << prices[n] << " gold.";
+	}
 }
 
-Weapon Store::sellWeapon(int)
+Weapon Store::sellWeapon(int weaponIndex)
 {
+	weaponIndex -= 1;
+	Weapon soldWeapon = stock[weaponIndex];
+	stock.pop_back();
+	return soldWeapon;
 }
