@@ -18,6 +18,7 @@ public:
 	Store();
 	void displayStock();
 	Weapon sellWeapon(int);
+	int getPrice(int);
 };
 
 #endif

@@ -27,7 +27,7 @@ Character::Character(std::string n, int h)
 	health = h;
 }
 
-Character::Character(std::string n, int h, int rh, std::vector<Weapon> weapons)
+Character::Character(std::string n, int h, int rh)
 {
 	name = n;
 	health = h;
@@ -118,6 +118,15 @@ void Character::checkHealth()
 	}
 }
 
+void Character::showWeapons() const
+{
+	for (int i = 0; i < weaponList.size(); i++)
+	{
+		Weapon weaponSlot = *weaponList[i];
+		std::cout << i + 1 << ", " << weaponSlot.getName() << " which does " << weaponSlot.getDamage() << " damage." << std::endl;
+	}
+}
+
 void Character::obtainWeapon(Weapon w)
 {
 	std::cout << name << " has obtained a " << w.getName() << " which does " << w.getDamage() << " damage." << std::endl;
@@ -129,15 +138,10 @@ void Character::setCurrentWeapon()
 {
 	std::cout << "Current weapon being used is " << currentWeapon.getName() << "." << std::endl;
 	int selectedWeapon = 0;
-	for (int i = 0; i < weaponList.size(); i++)
-	{
-		Weapon weaponSlot = *weaponList[i];
-		std::cout << i+1 << ", " << weaponSlot.getName() << " which does "<< weaponSlot.getDamage() << " damage." << std::endl;
-	}
+	showWeapons();
 	std::cout << "Select Weapon: ";
 	std::cin >> selectedWeapon;
 	currentWeapon = *weaponList[--selectedWeapon];
-	std::cout << selectedWeapon << std::endl;
 	std::cout << currentWeapon.getName() << " is now equipped" << std::endl;
 	if (currentWeapon.getName() == "Fists")
 	{

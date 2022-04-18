@@ -5,30 +5,28 @@
 #define PLAYER_H
 
 #include "Character.h"
-#include "Item.h"
-#include "HealingItem.h"
-#include "DamagingItem.h"
 #include <vector>
+#include <iostream>
 
 class Player : public Character
 {
 private:
 	int level, exp, gold;
-	 std::vector<Item*> items;
 public:
 	Player();
 	Player(std::string);
-	Player(std::string, int, int, int, int, int, std::vector<Item*>, std::vector<Weapon>);
+	Player(std::string, int, int, int, int, int);
 	int getLevel() const;
 	int getExp() const;
 	int getGold() const;
 	void setLevel(int);
 	void setExp(int);
 	void setGold(int);
-	void setItems(std::vector<Item*>);
 	void levelUp();
 	std::string getType() const;
 	void displayPlayer();
+	friend std::ostream& operator<<(std::ostream&, const Player&);
+	friend std::istream& operator>>(std::istream&, Player&);
 };
 
 #endif

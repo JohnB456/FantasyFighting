@@ -23,7 +23,7 @@ public:
 	Character();
 	Character(std::string);
 	Character(std::string, int);
-	Character(std::string, int, int, std::vector<Weapon>);
+	Character(std::string, int, int);
 	~Character();
 	std::string getName() const;
 	int getHealth();
@@ -38,6 +38,7 @@ public:
 	void IsHoldingItem();
 	virtual int attack();
 	void checkHealth();
+	void showWeapons() const;
 	void obtainWeapon(const Weapon);
 	virtual std::string getType() const = 0;
 };

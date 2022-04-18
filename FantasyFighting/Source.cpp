@@ -5,19 +5,86 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "EnemyRandomizer.h"
+#include "Store.h"
 #include <string>
 #include <vector>
+
+void fight(Player&);
+void weaponShop(Player&, Store&);
+void rest(Player&);
+void playerMenu(Player&);
+void save(Player&);
+
 int main()
 {
-	EnemyRandomizer r;
+	bool gameQuit = false;
 	std::string input = "";
 	std::cout << "What is our Hero's name?: ";
 	std::cin >> input;
 	std::cout << std::endl;
 	Player player(input);
+	Store store;
+
+	std::cout << "Welcome " << player.getName() << " to Fantasy Fighting!"<< std::endl;
+	while (gameQuit == false)
+	{
+		input = "";
+		std::cout << "what do you want to do?" << std::endl;
+		std::cout << "Fight" << "/Shop" << "/Rest" << "/Player" << "/Save" << "/Quit" << std::endl;
+		std::cout << std::endl;
+
+		std::cin >> input;
+
+
+		if (input == "Fight" || input == "fight")
+		{
+			std::cout << std::endl;
+			std::cout << std::endl;
+			fight(player);
+			std::cout << std::endl;
+			std::cout << std::endl;
+		}
+
+		else if (input == "Shop" || input == "shop")
+		{
+			std::cout << std::endl;
+			std::cout << std::endl;
+			weaponShop(player, store);
+			std::cout << std::endl;
+			std::cout << std::endl;
+		}
+
+		else if (input == "Rest" || input == "rest")
+		{
+			std::cout << std::endl;
+			std::cout << std::endl;
+			rest(player);
+			std::cout << std::endl;
+			std::cout << std::endl;
+		}
+
+		else if (input == "Player" || input == "player")
+		{
+			std::cout << std::endl;
+			std::cout << std::endl;
+			playerMenu(player);
+			std::cout << std::endl;
+			std::cout << std::endl;
+		}
+
+		else if (input == "Quit" || input == "quit")
+			gameQuit = true;
+	}
+	return 0;
+}
+
+void fight(Player& player)
+{
+	EnemyRandomizer r;
 	Enemy enemy = r.randomEnemyBeginneer();
 	enemy.setRemainingHealth(enemy.getHealth());
 	Battle test(player, enemy);
+	std::string input = "";
 
 	bool continueFighting = true;
 	std::string characterType = "";
@@ -27,6 +94,7 @@ int main()
 	bool battleOver = false;
 	
 	while (continueFighting == true)
+
 	{
 		while (battleOver == false)
 		{
@@ -66,16 +134,6 @@ int main()
 				player.levelUp();
 				std::cout << std::endl;
 
-				std::cout << "Do you want to see your character's stats?: ";
-				input = "";
-				std::cin >> input;
-
-				std::cout << std::endl;
-
-				if (input == "Yes" || input == "yes")
-				{
-					player.displayPlayer();
-				}
 			}
 			else
 			{
@@ -102,27 +160,102 @@ int main()
 			}
 		}
 
-		input = "";
-		std::cout << "Do you want to continue fighting?: ";
-		std::cin >> input;
-		if (input == "Yes" || input == "yes" && player.getRemainHealth() > 0)
+		
+		if (player.getRemainHealth() > 0)
 		{
-			battleOver = false;
-			continueFighting = true;
-			if (player.getLevel() <= 10)
-				enemy = r.randomEnemyBeginneer();
-			else if (player.getLevel() > 10 && player.getLevel() < 25)
-				enemy = r.randomEnemyMid();
-			else if (player.getLevel() > 25)
-				enemy = r.randomEnemyEnd();
-			enemy.setDeath(false);
-			enemy.setRemainingHealth(enemy.getHealth());
+			input = "";
+			std::cout << "Do you want to continue fighting?: ";
+			std::cin >> input;
+			if (input == "Yes" || input == "yes")
+			{
+				battleOver = false;
+				continueFighting = true;
+				if (player.getLevel() <= 10)
+					enemy = r.randomEnemyBeginneer();
+				else if (player.getLevel() > 10 && player.getLevel() < 25)
+					enemy = r.randomEnemyMid();
+				else if (player.getLevel() > 25)
+					enemy = r.randomEnemyEnd();
+				enemy.setDeath(false);
+				enemy.setRemainingHealth(enemy.getHealth());
+			}
+			else if (input == "No" || input == "no")
+			{
+				battleOver = true;
+				continueFighting = false;
+			}
 		}
-		else if(input == "No" || input == "no")
+		else if(player.getRemainHealth() < 0 || player.getRemainHealth() == 0)
 		{
-			battleOver = true;
-			continueFighting = false;
+			std::cout << "Game Over" << std::endl;
+			exit(0);
 		}
 	}
-	return 0;
+}
+
+void weaponShop(Player& p, Store& s)
+{
+	std::string input = "";
+	int index = 0;
+	std::cout << "You have " << p.getGold() << " gold." << std::endl;
+	s.displayStock();
+	std::cout << std::endl;
+	std::cout << "Which slot is the weapon you want to buy in?(0 if you can't buy a weapon): ";
+	std::cin >> index;
+	if (index == 0)
+	{
+		std::cout << "You chose not to buy a weapon." << std::endl;
+	}
+	else if (p.getGold() > s.getPrice(index) || p.getGold() == s.getPrice(index))
+	{
+		p.obtainWeapon(s.sellWeapon(index));
+		p.setGold(p.getGold() - s.getPrice(index));
+	}
+	else
+	{
+		std::cout << "Sorry you can't buy that." << std::endl;
+	}
+
+	std::cout << std::endl;
+	std::cout << "Do you want to change your weapon?: ";
+	std::cin >> input;
+	std::cout << std::endl;
+
+	if (input == "Yes" || input == "yes")
+		p.setCurrentWeapon();
+	
+}
+
+void rest(Player& player)
+{
+	std::string input = "";
+	std::cout << "Welcome to the inn" << std::endl;
+	std::cout << "Pay 5 gold to spend the night?: ";
+	std::cin >> input;
+	if (input == "Yes" || input == "yes")
+	{
+		std::cout << "You spend the night in the inn" << std::endl;
+		std::cout << "You recovered your HP";
+		player.setRemainingHealth(player.getHealth());
+	}
+	else
+	{
+		std::cout << "You left the inn";
+	}
+
+}
+
+void playerMenu(Player& player)
+{
+	std::string input = "";
+	player.displayPlayer();
+	std::cout << "Current Weapon: " << player.getCurrentWeaponName() << std::endl;
+
+	std::cout << "Do you want to change your weapon?: ";
+	std::cin >> input;
+	std::cout << std::endl;
+	
+	if (input == "Yes" || input == "yes")
+		player.setCurrentWeapon();
+
 }
