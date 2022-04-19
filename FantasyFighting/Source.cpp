@@ -98,7 +98,17 @@ int main()
 		}
 
 		else if (input == "Quit" || input == "quit")
+		{
+			input = "";
+			std::cout << "Do you want to save before quitting?: ";
+			std::cin >> input;
+			std::cout << std::endl;
+
+			if (input == "Yes" || input == "yes")
+				save(player);
+
 			gameQuit = true;
+		}
 	}
 	return 0;
 }
@@ -118,9 +128,7 @@ void fight(Player& player)
 	int moneyDropped = 0;
 	bool battleOver = false;
 
-	while (continueFighting == true)
 
-	{
 		while (battleOver == false)
 		{
 			int enemyAction = enemy.randomAction();
@@ -189,13 +197,7 @@ void fight(Player& player)
 		}
 
 
-		input = "";
-		std::cout << "Do you want to continue fighting?: ";
-		std::cin >> input;
-		if (input == "Yes" || input == "yes")
-		{
 			battleOver = false;
-			continueFighting = true;
 			if (player.getLevel() <= 10)
 				enemy = r.randomEnemyBeginneer();
 			else if (player.getLevel() > 10 && player.getLevel() < 25)
@@ -204,13 +206,7 @@ void fight(Player& player)
 				enemy = r.randomEnemyEnd();
 			enemy.setDeath(false);
 			enemy.setRemainingHealth(enemy.getHealth());
-		}
-		else if (input == "No" || input == "no")
-		{
-			battleOver = true;
-			continueFighting = false;
-		}
-	}
+		
 	}
 
 void weaponShop(Player& p, Store& s)

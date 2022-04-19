@@ -132,6 +132,7 @@ void Character::obtainWeapon(Weapon w)
 	std::cout << name << " has obtained a " << w.getName() << " which does " << w.getDamage() << " damage." << std::endl;
 	std::cout << std::endl;
 	weaponList.push_back(new Weapon(w.getName(), w.getDamage()));
+	
 }
 
 void Character::setCurrentWeapon()
