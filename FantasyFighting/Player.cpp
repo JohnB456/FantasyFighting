@@ -82,12 +82,12 @@ void Player::displayPlayer()
 
 std::ostream& operator<<(std::ostream& out, const Player& rhs)
 {
-	out << rhs.name;
-	out << rhs.health;
-	out << rhs.remainingHealth;
-	out << rhs.level;
-	out << rhs.exp;
-	out << rhs.gold;
+	out << rhs.name <<"\n";
+	out << rhs.health <<"\n";
+	out << rhs.remainingHealth <<"\n";
+	out << rhs.level<<"\n";
+	out << rhs.exp << "\n";
+	out << rhs.gold << "\n";
 	return out;
 }
 

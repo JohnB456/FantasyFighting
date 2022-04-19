@@ -8,6 +8,7 @@
 #include "Store.h"
 #include <string>
 #include <vector>
+#include <fstream>
 
 void fight(Player&);
 void weaponShop(Player&, Store&);
@@ -19,10 +20,25 @@ int main()
 {
 	bool gameQuit = false;
 	std::string input = "";
-	std::cout << "What is our Hero's name?: ";
+	Player player;
+
+	std::cout << "Welcome are new or a returning player(new or returning): ";
 	std::cin >> input;
 	std::cout << std::endl;
-	Player player(input);
+
+	if (input == "New" || input == "new")
+	{
+		std::cout << "What is our Hero's name?: ";
+		std::cin >> input;
+		std::cout << std::endl;
+		player = Player(input);
+	}
+	else if (input == "Returning" || input == "returning")
+	{
+		std::fstream fin("Player.txt");
+		fin >> player;
+	}
+
 	Store store;
 
 	std::cout << "Welcome " << player.getName() << " to Fantasy Fighting!"<< std::endl;
@@ -72,6 +88,15 @@ int main()
 			std::cout << std::endl;
 		}
 
+		else if (input == "Save" || input == "save")
+		{
+			std::cout << std::endl;
+			std::cout << std::endl;
+			save(player);
+			std::cout << std::endl;
+			std::cout << std::endl;
+		}
+
 		else if (input == "Quit" || input == "quit")
 			gameQuit = true;
 	}
@@ -92,7 +117,7 @@ void fight(Player& player)
 	int expDropped = 0;
 	int moneyDropped = 0;
 	bool battleOver = false;
-	
+
 	while (continueFighting == true)
 
 	{
@@ -157,41 +182,36 @@ void fight(Player& player)
 			{
 				std::cout << "Sorry hero you have fallen" << std::endl;
 				battleOver = true;
+				std::cout << std::endl;
+				std::cout << "Game Over" << std::endl;
+				exit(1);
 			}
 		}
 
-		
-		if (player.getRemainHealth() > 0)
+
+		input = "";
+		std::cout << "Do you want to continue fighting?: ";
+		std::cin >> input;
+		if (input == "Yes" || input == "yes")
 		{
-			input = "";
-			std::cout << "Do you want to continue fighting?: ";
-			std::cin >> input;
-			if (input == "Yes" || input == "yes")
-			{
-				battleOver = false;
-				continueFighting = true;
-				if (player.getLevel() <= 10)
-					enemy = r.randomEnemyBeginneer();
-				else if (player.getLevel() > 10 && player.getLevel() < 25)
-					enemy = r.randomEnemyMid();
-				else if (player.getLevel() > 25)
-					enemy = r.randomEnemyEnd();
-				enemy.setDeath(false);
-				enemy.setRemainingHealth(enemy.getHealth());
-			}
-			else if (input == "No" || input == "no")
-			{
-				battleOver = true;
-				continueFighting = false;
-			}
+			battleOver = false;
+			continueFighting = true;
+			if (player.getLevel() <= 10)
+				enemy = r.randomEnemyBeginneer();
+			else if (player.getLevel() > 10 && player.getLevel() < 25)
+				enemy = r.randomEnemyMid();
+			else if (player.getLevel() > 25)
+				enemy = r.randomEnemyEnd();
+			enemy.setDeath(false);
+			enemy.setRemainingHealth(enemy.getHealth());
 		}
-		else if(player.getRemainHealth() < 0 || player.getRemainHealth() == 0)
+		else if (input == "No" || input == "no")
 		{
-			std::cout << "Game Over" << std::endl;
-			exit(0);
+			battleOver = true;
+			continueFighting = false;
 		}
 	}
-}
+	}
 
 void weaponShop(Player& p, Store& s)
 {
@@ -258,4 +278,10 @@ void playerMenu(Player& player)
 	if (input == "Yes" || input == "yes")
 		player.setCurrentWeapon();
 
+}
+
+void save(Player& player)
+{
+	std::fstream fout("Player.txt");
+	fout << player;
 }
